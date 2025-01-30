@@ -986,7 +986,7 @@ async def txt_handler(bot: Client, m: Message):
                     x = url.replace(x, "")
                     url = ((m3u8.loads(requests.get(url).text)).data['playlists'][1]['uri']).replace(q+"/", x)
                     
-            elif '/master.m3u8' in url:
+            elif '/master.mpd' in url:
              vid_id =  url.split("/")[-2]
              url =  f"https://madxapi-d0cbf6ac738c.herokuapp.com/{vid_id}/master.m3u8?token={raw_text4}"
 
