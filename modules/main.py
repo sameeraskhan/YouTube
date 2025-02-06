@@ -203,17 +203,17 @@ async def txt_handler(bot: Client, m: Message):
     await input2.delete(True)
     try:
         if raw_text2 == "144":
-            res = "256x144"
+            res = "144x256"
         elif raw_text2 == "240":
-            res = "426x240"
+            res = "240x426"
         elif raw_text2 == "360":
-            res = "640x360"
+            res = "360x640"
         elif raw_text2 == "480":
-            res = "854x480"
+            res = "480x854"
         elif raw_text2 == "720":
-            res = "1280x720"
+            res = "720x1280"
         elif raw_text2 == "1080":
-            res = "1920x1080" 
+            res = "1080x1920" 
         else: 
             res = "UN"
     except Exception:
@@ -277,15 +277,40 @@ async def txt_handler(bot: Client, m: Message):
             if 'cpvod.testbook.com' in url:
                url = requests.get(f'https://mon-key-3612a8154345.herokuapp.com/get_keys?url=https://cpvod.testbook.com/65f02cbd734b790a42d7317f/playlist.m3u8', headers={'x-access-token': 'eyJjb3Vyc2VJZCI6IjQ1NjY4NyIsInR1dG9ySWQiOm51bGwsIm9yZ0lkIjo0ODA2MTksImNhdGVnb3J5SWQiOm51bGx9r'}).json()['url']
 
-            
+            elif "apps-s3-jw-prod.utkarshapp.com" in url:
+                if 'enc_plain_mp4' in url:
+                    url = url.replace(url.split("/")[-1], res+'.mp4')
+                    
+                elif 'Key-Pair-Id' in url:
+                    url = None
+                    
+                elif '.m3u8' in url:
+                    q = ((m3u8.loads(requests.get(url).text)).data['playlists'][1]['uri']).split("/")[0]
+                    x = url.split("/")[5]
+                    x = url.replace(x, "")
+                    url = ((m3u8.loads(requests.get(url).text)).data['playlists'][1]['uri']).replace(q+"/", x)
+
             elif '/master.mpd' in url:
              vid_id =  url.split("/")[-2]
              url =  f"https://madxapi-d0cbf6ac738c.herokuapp.com/{vid_id}/master.m3u8?token={raw_text4}"
 
             name1 = links[i][0].replace("\t", "").replace(":", "").replace("/", "").replace("+", "").replace("#", "").replace("|", "").replace("@", "").replace("*", "").replace(".", "").replace("https", "").replace("http", "").strip()
             name = f'{str(count).zfill(3)}) {name1[:60]} {my_name}'
-                      
-            
+
+            if '/master.m3u8' in url:
+             vid_id =  url.split("/")[-2]
+             url =  f"https://madxapi-d0cbf6ac738c.herokuapp.com/{vid_id}/master.m3u8?token={raw_text4}"
+
+            if 'workers.dev' in url:
+             vid_id = url.split("cloudfront.net/")[1].split("/")[0]
+             print(vid_id)
+             url = f"https://madxapi-d0cbf6ac738c.herokuapp.com/{vid_id}/master.m3u8?token={raw_text4}"
+                
+            if 'psitoffers.store' in url:
+             vid_id = url.split("vid=")[1].split("&")[0]
+             print(f"vid_id = {vid_id}")
+             url =  f"https://madxapi-d0cbf6ac738c.herokuapp.com/{vid_id}/master.m3u8?token={raw_text4}"
+
             if "edge.api.brightcove.com" in url:
                 bcov = 'bcov_auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MjQyMzg3OTEsImNvbiI6eyJpc0FkbWluIjpmYWxzZSwiYXVzZXIiOiJVMFZ6TkdGU2NuQlZjR3h5TkZwV09FYzBURGxOZHowOSIsImlkIjoiZEUxbmNuZFBNblJqVEROVmFWTlFWbXhRTkhoS2R6MDkiLCJmaXJzdF9uYW1lIjoiYVcxV05ITjVSemR6Vm10ak1WUlBSRkF5ZVNzM1VUMDkiLCJlbWFpbCI6Ik5Ga3hNVWhxUXpRNFJ6VlhiR0ppWTJoUk0wMVdNR0pVTlU5clJXSkRWbXRMTTBSU2FHRnhURTFTUlQwPSIsInBob25lIjoiVUhVMFZrOWFTbmQ1ZVcwd1pqUTViRzVSYVc5aGR6MDkiLCJhdmF0YXIiOiJLM1ZzY1M4elMwcDBRbmxrYms4M1JEbHZla05pVVQwOSIsInJlZmVycmFsX2NvZGUiOiJOalZFYzBkM1IyNTBSM3B3VUZWbVRtbHFRVXAwVVQwOSIsImRldmljZV90eXBlIjoiYW5kcm9pZCIsImRldmljZV92ZXJzaW9uIjoiUShBbmRyb2lkIDEwLjApIiwiZGV2aWNlX21vZGVsIjoiU2Ftc3VuZyBTTS1TOTE4QiIsInJlbW90ZV9hZGRyIjoiNTQuMjI2LjI1NS4xNjMsIDU0LjIyNi4yNTUuMTYzIn19.snDdd-PbaoC42OUhn5SJaEGxq0VzfdzO49WTmYgTx8ra_Lz66GySZykpd2SxIZCnrKR6-R10F5sUSrKATv1CDk9ruj_ltCjEkcRq8mAqAytDcEBp72-W0Z7DtGi8LdnY7Vd9Kpaf499P-y3-godolS_7ixClcYOnWxe2nSVD5C9c5HkyisrHTvf6NFAuQC_FD3TzByldbPVKK0ag1UnHRavX8MtttjshnRhv5gJs5DQWj4Ir_dkMcJ4JaVZO3z8j0OxVLjnmuaRBujT-1pavsr1CCzjTbAcBvdjUfvzEhObWfA1-Vl5Y4bUgRHhl1U-0hne4-5fF0aouyu71Y6W0eg'
                 url = url.split("bcov_auth")[0]+bcov
@@ -306,8 +331,8 @@ async def txt_handler(bot: Client, m: Message):
 
             try:  
                 
-                cc = f'**🎞️ VID_ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} {res}.mkv\n\n<pre><code>📚 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}\n\n**━━━━━✦𝐀𝐍𝐊𝐈𝐓❤️✦━━━━━**'
-                cc1 = f'**📁 PDF_ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} .pdf\n\n<pre><code>📚 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}\n\n**━━━━━✦𝐀𝐍𝐊𝐈𝐓❤️✦━━━━━**'
+                cc = f'**🎞️ VID_ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} @Ankit_Shakya72 {res}.mkv\n\n<pre><code>📚 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}\n\n**━━━━━✦𝐀𝐍𝐊𝐈𝐓❤️✦━━━━━**'
+                cc1 = f'**📁 PDF_ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} @Ankit_Shakya72.pdf\n\n<pre><code>📚 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}\n\n**━━━━━✦𝐀𝐍𝐊𝐈𝐓❤️✦━━━━━**'
                     
                 
                 if "drive" in url:
@@ -435,17 +460,17 @@ async def txt_handler(bot: Client, m: Message):
     await input2.delete(True)
     try:
         if raw_text2 == "144":
-            res = "256x144"
+            res = "144x256"
         elif raw_text2 == "240":
-            res = "426x240"
+            res = "240x426"
         elif raw_text2 == "360":
-            res = "640x360"
+            res = "360x640"
         elif raw_text2 == "480":
-            res = "854x480"
+            res = "480x854"
         elif raw_text2 == "720":
-            res = "1280x720"
+            res = "720x1280"
         elif raw_text2 == "1080":
-            res = "1920x1080" 
+            res = "1080x1920" 
         else: 
             res = "UN"
     except Exception:
@@ -670,17 +695,17 @@ async def txt_handler(bot: Client, m: Message):
     await input2.delete(True)
     try:
         if raw_text2 == "144":
-            res = "256x144"
+            res = "144x256"
         elif raw_text2 == "240":
-            res = "426x240"
+            res = "240x426"
         elif raw_text2 == "360":
-            res = "640x360"
+            res = "360x640"
         elif raw_text2 == "480":
-            res = "854x480"
+            res = "480x854"
         elif raw_text2 == "720":
-            res = "1280x720"
+            res = "720x1280"
         elif raw_text2 == "1080":
-            res = "1920x1080" 
+            res = "1080x1920" 
         else: 
             res = "UN"
     except Exception:
@@ -903,17 +928,17 @@ async def txt_handler(bot: Client, m: Message):
     await input2.delete(True)
     try:
         if raw_text2 == "144":
-            res = "256x144"
+            res = "144x256"
         elif raw_text2 == "240":
-            res = "426x240"
+            res = "240x426"
         elif raw_text2 == "360":
-            res = "640x360"
+            res = "360x640"
         elif raw_text2 == "480":
-            res = "854x480"
+            res = "480x854"
         elif raw_text2 == "720":
-            res = "1280x720"
+            res = "720x1280"
         elif raw_text2 == "1080":
-            res = "1920x1080" 
+            res = "1080x1920" 
         else: 
             res = "UN"
     except Exception:
@@ -999,7 +1024,22 @@ async def txt_handler(bot: Client, m: Message):
             if "edge.api.brightcove.com" in url:
                 bcov = 'bcov_auth=eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE3MjQyMzg3OTEsImNvbiI6eyJpc0FkbWluIjpmYWxzZSwiYXVzZXIiOiJVMFZ6TkdGU2NuQlZjR3h5TkZwV09FYzBURGxOZHowOSIsImlkIjoiZEUxbmNuZFBNblJqVEROVmFWTlFWbXhRTkhoS2R6MDkiLCJmaXJzdF9uYW1lIjoiYVcxV05ITjVSemR6Vm10ak1WUlBSRkF5ZVNzM1VUMDkiLCJlbWFpbCI6Ik5Ga3hNVWhxUXpRNFJ6VlhiR0ppWTJoUk0wMVdNR0pVTlU5clJXSkRWbXRMTTBSU2FHRnhURTFTUlQwPSIsInBob25lIjoiVUhVMFZrOWFTbmQ1ZVcwd1pqUTViRzVSYVc5aGR6MDkiLCJhdmF0YXIiOiJLM1ZzY1M4elMwcDBRbmxrYms4M1JEbHZla05pVVQwOSIsInJlZmVycmFsX2NvZGUiOiJOalZFYzBkM1IyNTBSM3B3VUZWbVRtbHFRVXAwVVQwOSIsImRldmljZV90eXBlIjoiYW5kcm9pZCIsImRldmljZV92ZXJzaW9uIjoiUShBbmRyb2lkIDEwLjApIiwiZGV2aWNlX21vZGVsIjoiU2Ftc3VuZyBTTS1TOTE4QiIsInJlbW90ZV9hZGRyIjoiNTQuMjI2LjI1NS4xNjMsIDU0LjIyNi4yNTUuMTYzIn19.snDdd-PbaoC42OUhn5SJaEGxq0VzfdzO49WTmYgTx8ra_Lz66GySZykpd2SxIZCnrKR6-R10F5sUSrKATv1CDk9ruj_ltCjEkcRq8mAqAytDcEBp72-W0Z7DtGi8LdnY7Vd9Kpaf499P-y3-godolS_7ixClcYOnWxe2nSVD5C9c5HkyisrHTvf6NFAuQC_FD3TzByldbPVKK0ag1UnHRavX8MtttjshnRhv5gJs5DQWj4Ir_dkMcJ4JaVZO3z8j0OxVLjnmuaRBujT-1pavsr1CCzjTbAcBvdjUfvzEhObWfA1-Vl5Y4bUgRHhl1U-0hne4-5fF0aouyu71Y6W0eg'
                 url = url.split("bcov_auth")[0]+bcov
+
+            if 'workers.dev' in url:
+             vid_id = url.split("cloudfront.net/")[1].split("/")[0]
+             print(vid_id)
+             url = f"https://madxapi-d0cbf6ac738c.herokuapp.com/{vid_id}/master.m3u8?token={raw_text4}"
                 
+            if 'psitoffers.store' in url:
+             vid_id = url.split("vid=")[1].split("&")[0]
+             print(f"vid_id = {vid_id}")
+             url =  f"https://madxapi-d0cbf6ac738c.herokuapp.com/{vid_id}/master.m3u8?token={raw_text4}"
+
+            if '/master.m3u8' in url:
+             vid_id =  url.split("/")[-2]
+             url =  f"https://madxapi-d0cbf6ac738c.herokuapp.com/{vid_id}/master.m3u8?token={raw_text4}"
+
+  
             if "youtu" in url:
                 ytf = f"b[height<={raw_text2}][ext=mp4]/bv[height<={raw_text2}][ext=mp4]+ba[ext=m4a]/b[ext=mp4]"
             else:
@@ -1144,17 +1184,17 @@ async def txt_handler(bot: Client, m: Message):
     await input2.delete(True)
     try:
         if raw_text2 == "144":
-            res = "256x144"
+            res = "144x256"
         elif raw_text2 == "240":
-            res = "426x240"
+            res = "240x426"
         elif raw_text2 == "360":
-            res = "640x360"
+            res = "360x640"
         elif raw_text2 == "480":
-            res = "854x480"
+            res = "480x854"
         elif raw_text2 == "720":
-            res = "1280x720"
+            res = "720x1280"
         elif raw_text2 == "1080":
-            res = "1920x1080" 
+            res = "1080x1920" 
         else: 
             res = "UN"
     except Exception:
