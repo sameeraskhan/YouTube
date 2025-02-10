@@ -174,6 +174,10 @@ async def txt_handler(bot: Client, m: Message):
         links = []
         for i in content:
             links.append(i.split("://", 1))
+
+        # Extract the title from the file name
+        file_name = os.path.basename(x)  # Get the file name from the path
+        raw_text0 = os.path.splitext(file_name)[0]  # Remove the file extension to get the title
         os.remove(x)
     except:
         await m.reply_text("Invalid file input.")
@@ -188,14 +192,14 @@ async def txt_handler(bot: Client, m: Message):
         arg = int(raw_text)
     except:
         arg = 1
-    await editable.edit("**Enter Your Batch Name or send d for grabing from text filename.**")
-    input1: Message = await bot.listen(editable.chat.id)
-    raw_text0 = input1.text
-    await input1.delete(True)
-    if raw_text0 == 'd':
-        b_name = file_name
-    else:
-        b_name = raw_text0
+    #await editable.edit("**Enter Your Batch Name or send d for grabing from text filename.**")
+    #input1: Message = await bot.listen(editable.chat.id)
+    #raw_text0 = input1.text
+    #await input1.delete(True)
+    #if raw_text0 == 'd':
+        #b_name = file_name
+    #else:
+        #b_name = raw_text0
 
     await editable.edit("**Enter resolution.\n Eg : 480 or 720**")
     input2: Message = await bot.listen(editable.chat.id)
@@ -219,14 +223,15 @@ async def txt_handler(bot: Client, m: Message):
     except Exception:
             res = "UN"
     
-    await editable.edit("**Enter Your Name or send 'de' for use default.\n Eg : 𝕰𝖓𝖌𝖎𝖓𝖊𝖊𝖗𝖘 𝕭𝖆𝖇𝖚™👨🏻‍💻**")
-    input3: Message = await bot.listen(editable.chat.id)
-    raw_text3 = input3.text
-    await input3.delete(True)
-    if raw_text3 == 'de':
-        CR = credit
-    else:
-        CR = raw_text3
+    #await editable.edit("**Enter Your Name or send 'de' for use default.\n Eg : 𝕰𝖓𝖌𝖎𝖓𝖊𝖊𝖗𝖘 𝕭𝖆𝖇𝖚™👨🏻‍💻**")
+    #input3: Message = await bot.listen(editable.chat.id)
+    #raw_text3 = input3.text
+    #await input3.delete(True)
+    #if raw_text3 == 'de':
+        #CR = credit
+    #else:
+        #CR = raw_text3
+    raw_text3 == 𝕰𝖓𝖌𝖎𝖓𝖊𝖊𝖗𝖘 𝕭𝖆𝖇𝖚
         
     await editable.edit("**Enter Your PW Token For 𝐌𝐏𝐃 𝐔𝐑𝐋  or send 'unknown' for use default**")
     input4: Message = await bot.listen(editable.chat.id)
@@ -237,18 +242,18 @@ async def txt_handler(bot: Client, m: Message):
     else:
         MR = raw_text4
         
-    await editable.edit("Now send the **Thumb url**\n**Eg :** ``\n\nor Send `no`")
-    input6 = message = await bot.listen(editable.chat.id)
-    raw_text6 = input6.text
-    await input6.delete(True)
-    await editable.delete()
+    #await editable.edit("Now send the **Thumb url**\n**Eg :** ``\n\nor Send `no`")
+    ##input6 = message = await bot.listen(editable.chat.id)
+    #raw_text6 = input6.text
+    #await input6.delete(True)
+    #await editable.delete()
 
-    thumb = input6.text
-    if thumb.startswith("http://") or thumb.startswith("https://"):
-        getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
-        thumb = "thumb.jpg"
-    else:
-        thumb == "no"
+    #thumb = input6.text
+    #if thumb.startswith("http://") or thumb.startswith("https://"):
+        #getstatusoutput(f"wget '{thumb}' -O 'thumb.jpg'")
+        #thumb = "thumb.jpg"
+    #else:
+        #thumb == "no"
 
     count =int(raw_text)    
     try:
@@ -331,8 +336,8 @@ async def txt_handler(bot: Client, m: Message):
 
             try:  
                 
-                cc = f'**🎞️ VID_ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} @Ankit_Shakya72 {res}.mkv\n\n<pre><code>📚 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}\n\n**━━━━━✦𝕰𝖓𝖌𝖎𝖓𝖊𝖊𝖗𝖘 𝕭𝖆𝖇𝖚❤️✦━━━━━**'
-                cc1 = f'**📁 PDF_ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} @Ankit_Shakya72.pdf\n\n<pre><code>📚 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}\n\n**━━━━━✦𝕰𝖓𝖌𝖎𝖓𝖊𝖊𝖗𝖘 𝕭𝖆𝖇𝖚❤️✦━━━━━**'
+                cc = f'**🎞️ VID_ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} {raw_text3} {res}.mkv\n\n<pre><code>📚 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}\n\n**━━━━━✦𝕰𝖓𝖌𝖎𝖓𝖊𝖊𝖗𝖘 𝕭𝖆𝖇𝖚❤️✦━━━━━**'
+                cc1 = f'**📁 PDF_ID: {str(count).zfill(3)}.\n\n📄 Title: {name1} {raw_text3}.pdf\n\n<pre><code>📚 Batch Name: {b_name}</code></pre>\n\n📥 Extracted By : {CR}\n\n**━━━━━✦𝕰𝖓𝖌𝖎𝖓𝖊𝖊𝖗𝖘 𝕭𝖆𝖇𝖚❤️✦━━━━━**'
                     
                 
                 if "drive" in url:
